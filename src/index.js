@@ -12,8 +12,8 @@ client.loadNotes(
     model.setNotes(notes);
     view.displayNotes();
   },
-  () => {
+  (error) => {
     // This will be executed if there's an error
-    view.displayError();
+    view.displayError(error);
   }
 );

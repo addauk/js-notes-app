@@ -11,10 +11,13 @@ class NotesView {
   }
 
   async displayNotesFromApi() {
-    this.client.loadNotes((notesData) => {
-      this.model.setNotes(notesData);
-      this.displayNotes();
-    }, this.displayError);
+    this.client.loadNotes(
+      (notesData) => {
+        this.model.setNotes(notesData);
+        this.displayNotes();
+      },
+      (error) => this.displayError(error)
+    );
   }
 
   displayNotes() {
@@ -31,19 +34,23 @@ class NotesView {
     });
   }
 
-  displayError() {
+  displayError(error) {
     const div = document.createElement("div");
     div.className = "error";
-    div.textContent = "Oops, something went wrong!";
+    div.textContent = "Oops, something went wrong!" + error;
     this.mainContainer.append(div);
   }
 
   addNote = async () => {
-    this.client.createNote(this.inputEl.value, (data) => {
-      this.model.setNotes(data);
-      this.inputEl.value = null;
-      this.displayNotes();
-    });
+    this.client.createNote(
+      this.inputEl.value,
+      (data) => {
+        this.model.setNotes(data);
+        this.inputEl.value = null;
+        this.displayNotes();
+      },
+      (error) => this.displayError(error)
+    );
   };
 }
 
