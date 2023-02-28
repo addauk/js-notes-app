@@ -31,10 +31,12 @@ class NotesView {
     });
   }
 
-  addNote() {
-    this.model.addNote(this.inputEl.value);
-    this.displayNotes();
-    this.inputEl.value = null;
+  async addNote() {
+    this.client.createNote(this.inputEl.value, (data) => {
+      this.model.setNotes(data);
+      this.inputEl.value = null;
+      this.displayNotes();
+    });
   }
 }
 

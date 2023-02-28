@@ -5,22 +5,39 @@
 const fs = require("fs");
 const NotesView = require("./notesView");
 const NotesModel = require("./notesModel");
+const NotesClient = require("./notesClient");
+
+jest.mock("./notesClient");
 
 describe("NotesView", () => {
   beforeEach(() => {
+    NotesClient.mockClear();
     document.body.innerHTML = fs.readFileSync("./index.html");
   });
 
   it("constructs", () => {
     const model = new NotesModel();
-    const view = new NotesView(model);
+    const mockClient = new NotesClient();
+    const view = new NotesView(model, mockClient);
     expect(view).toBeInstanceOf(NotesView);
     expect(view.model).toEqual(model);
   });
 
-  it("displayNotes", () => {
+  it("displayNotesFromApi()", () => {
     const model = new NotesModel();
-    const view = new NotesView(model);
+    const mockClient = new NotesClient();
+    mockClient.loadNotes.mockImplementation((callback) => callback(["Hello"]));
+    const view = new NotesView(model, mockClient);
+    view.displayNotesFromApi();
+    const dom = document.querySelectorAll(".note");
+    expect(dom.length).toBe(1);
+    expect(dom[0].textContent).toBe("Hello");
+  });
+
+  it("displayNotes from internal store", () => {
+    const model = new NotesModel();
+    const mockClient = new NotesClient();
+    const view = new NotesView(model, mockClient);
     model.addNote("Hello");
     model.addNote("World");
     view.displayNotes();
@@ -28,9 +45,13 @@ describe("NotesView", () => {
     expect(document.querySelectorAll(".note")[1].textContent).toBe("World");
   });
 
-  it("adds a new note and displays", () => {
+  it("adds a new note and displays from api", () => {
     const model = new NotesModel();
-    const view = new NotesView(model);
+    const mockClient = new NotesClient();
+    mockClient.createNote.mockImplementation((note, callback) =>
+      callback([note])
+    );
+    const view = new NotesView(model, mockClient);
     const inputEl = document.querySelector("#note-input");
     inputEl.value = "Hello world";
     const addButton = document.querySelector("#add-button");
@@ -40,7 +61,8 @@ describe("NotesView", () => {
 
   it("shows the correct number of notes after multiple adds", () => {
     const model = new NotesModel();
-    const view = new NotesView(model);
+    const mockClient = new NotesClient();
+    const view = new NotesView(model, mockClient);
     model.addNote("Hello");
     view.displayNotes();
     model.addNote("World");

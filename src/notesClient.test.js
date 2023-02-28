@@ -30,4 +30,16 @@ describe("NotesClient class", () => {
       done();
     });
   });
+
+  it("calls fetch and POSTs the data", (done) => {
+    const client = new NotesClient();
+    fetch.mockResponseOnce(JSON.stringify(["blah blah"]));
+
+    client.createNote("blah blah", (returnedDataFromApi) => {
+      expect(returnedDataFromApi[returnedDataFromApi.length - 1]).toBe(
+        "blah blah"
+      );
+      done();
+    });
+  });
 });
