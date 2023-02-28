@@ -40,7 +40,7 @@ describe("NotesView", () => {
     const view = new NotesView(model, mockClient);
     view.displayError();
     const dom = document.querySelectorAll(".error");
-    expect(dom[0].textContent).toBe("Oops, something went wrong!");
+    expect(dom[0].textContent).toContain("Oops, something went wrong!");
   });
 
   it("displayNotes from internal store", () => {

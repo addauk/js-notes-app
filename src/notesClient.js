@@ -1,26 +1,27 @@
 class NotesClient {
-  async loadNotes(callback, errorCallback) {
-    const response = await fetch("http://localhost:3000/notes").catch((error) =>
-      errorCallback(error)
-    );
-    const data = await response.json();
-    return callback(data);
+  loadNotes(callback, errorCallback) {
+    fetch("http://localhost:3000/notes")
+      .then((response) => response.json())
+      .then((data) => callback(data))
+      .catch((error) => errorCallback(error));
   }
 
   async createNote(note, callback, errorCallback) {
     const data = { content: note };
 
-    const response = await fetch("http://localhost:3000/notes", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).catch((error) => {
+    try {
+      const response = await fetch("http://localhost:3000/notes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const responseData = await response.json();
+      return callback(responseData);
+    } catch (error) {
       errorCallback(error);
-    });
-    const responseData = await response.json();
-    return callback(responseData);
+    }
   }
 }
 
