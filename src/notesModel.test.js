@@ -13,6 +13,12 @@ describe("NotesModel", () => {
     expect(model.getNotes()).toEqual(["Buy Milk", "Go to the gym"]);
   });
 
+  it("sets a collection of notes", () => {
+    const model = new NotesModel();
+    model.setNotes(["Buy Milk", "Go to the gym"]);
+    expect(model.getNotes()).toEqual(["Buy Milk", "Go to the gym"]);
+  });
+
   it("resets the notes to an empty list", () => {
     const model = new NotesModel();
     model.addNote("Buy Milk");
