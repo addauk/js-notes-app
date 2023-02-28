@@ -14,7 +14,7 @@ class NotesView {
     this.client.loadNotes((notesData) => {
       this.model.setNotes(notesData);
       this.displayNotes();
-    });
+    }, this.displayError);
   }
 
   displayNotes() {
@@ -31,13 +31,20 @@ class NotesView {
     });
   }
 
-  async addNote() {
+  displayError() {
+    const div = document.createElement("div");
+    div.className = "error";
+    div.textContent = "Oops, something went wrong!";
+    this.mainContainer.append(div);
+  }
+
+  addNote = async () => {
     this.client.createNote(this.inputEl.value, (data) => {
       this.model.setNotes(data);
       this.inputEl.value = null;
       this.displayNotes();
     });
-  }
+  };
 }
 
 module.exports = NotesView;

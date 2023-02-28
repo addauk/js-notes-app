@@ -34,6 +34,15 @@ describe("NotesView", () => {
     expect(dom[0].textContent).toBe("Hello");
   });
 
+  it("displays an error", () => {
+    const model = new NotesModel();
+    const mockClient = new NotesClient();
+    const view = new NotesView(model, mockClient);
+    view.displayError();
+    const dom = document.querySelectorAll(".error");
+    expect(dom[0].textContent).toBe("Oops, something went wrong!");
+  });
+
   it("displayNotes from internal store", () => {
     const model = new NotesModel();
     const mockClient = new NotesClient();

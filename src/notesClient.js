@@ -1,6 +1,8 @@
 class NotesClient {
-  async loadNotes(callback) {
-    const response = await fetch("http://localhost:3000/notes");
+  async loadNotes(callback, errorCallback) {
+    const response = await fetch("http://localhost:3000/notes").catch((error) =>
+      errorCallback(error)
+    );
     const data = await response.json();
     return callback(data);
   }
