@@ -34,7 +34,6 @@ class NotesClient {
   }
 
   emojify(text, callback, errorCallback) {
-    console.log("entered emojify");
     const data = { text: text };
     fetch("https://makers-emojify.herokuapp.com/", {
       method: "POST",

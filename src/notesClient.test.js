@@ -58,7 +58,6 @@ describe("NotesClient class", () => {
     client.emojify(
       "hello :earth_africa:",
       (returnedDataFromApi) => {
-        console.log(returnedDataFromApi);
         expect(returnedDataFromApi).toBe("hello 🌍");
         done();
       },
