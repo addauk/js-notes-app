@@ -68,6 +68,24 @@ describe("NotesView", () => {
     expect(document.querySelector("div .note").textContent).toBe("Hello world");
   });
 
+  it("resets all notes on api", () => {
+    const model = new NotesModel();
+    const mockClient = new NotesClient();
+    mockClient.createNote.mockImplementation((note, callback) =>
+      callback([note])
+    );
+    mockClient.reset.mockImplementation((callback) => callback([]));
+    const view = new NotesView(model, mockClient);
+    const inputEl = document.querySelector("#note-input");
+    inputEl.value = "Hello world";
+    const addButton = document.querySelector("#add-button");
+    addButton.click();
+    expect(document.querySelector("div .note").textContent).toBe("Hello world");
+    const resetButton = document.querySelector("#reset-button");
+    resetButton.click();
+    expect(document.querySelector("div .note")).toEqual(null);
+  });
+
   it("shows the correct number of notes after multiple adds", () => {
     const model = new NotesModel();
     const mockClient = new NotesClient();

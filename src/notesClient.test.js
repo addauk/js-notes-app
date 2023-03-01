@@ -42,4 +42,13 @@ describe("NotesClient class", () => {
       done();
     });
   });
+
+  it("calls fetch and deletes all the note data", (done) => {
+    const client = new NotesClient();
+    fetch.mockResponseOnce(JSON.stringify([]));
+    client.reset((returnedDataFromApi) => {
+      expect(returnedDataFromApi.length).toBe(0);
+      done();
+    });
+  });
 });

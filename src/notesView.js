@@ -3,10 +3,14 @@ class NotesView {
     this.client = client;
     this.model = model;
     this.mainContainer = document.querySelector("#main-container");
-    this.buttonEl = document.querySelector("#add-button");
+    this.addButtonEl = document.querySelector("#add-button");
+    this.resetButtonEl = document.querySelector("#reset-button");
     this.inputEl = document.querySelector("#note-input");
-    this.buttonEl.addEventListener("click", () => {
+    this.addButtonEl.addEventListener("click", () => {
       this.addNote();
+    });
+    this.resetButtonEl.addEventListener("click", () => {
+      this.resetAllNotesFromApi();
     });
   }
 
@@ -14,6 +18,16 @@ class NotesView {
     this.client.loadNotes(
       (notesData) => {
         this.model.setNotes(notesData);
+        this.displayNotes();
+      },
+      (error) => this.displayError(error)
+    );
+  }
+
+  async resetAllNotesFromApi() {
+    this.client.reset(
+      (data) => {
+        this.model.setNotes(data);
         this.displayNotes();
       },
       (error) => this.displayError(error)
