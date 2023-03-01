@@ -60,6 +60,7 @@ describe("NotesView", () => {
     mockClient.createNote.mockImplementation((note, callback) =>
       callback([note])
     );
+    mockClient.emojify.mockImplementation((note, callback) => callback(note));
     const view = new NotesView(model, mockClient);
     const inputEl = document.querySelector("#note-input");
     inputEl.value = "Hello world";
@@ -74,6 +75,7 @@ describe("NotesView", () => {
     mockClient.createNote.mockImplementation((note, callback) =>
       callback([note])
     );
+    mockClient.emojify.mockImplementation((note, callback) => callback(note));
     mockClient.reset.mockImplementation((callback) => callback([]));
     const view = new NotesView(model, mockClient);
     const inputEl = document.querySelector("#note-input");

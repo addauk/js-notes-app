@@ -56,12 +56,14 @@ class NotesView {
   }
 
   addNote = async () => {
-    this.client.createNote(
+    const data = await this.client.emojify(
       this.inputEl.value,
       (data) => {
-        this.model.setNotes(data);
-        this.inputEl.value = null;
-        this.displayNotes();
+        this.client.createNote(data, (data) => {
+          this.model.setNotes(data);
+          this.inputEl.value = null;
+          this.displayNotes();
+        });
       },
       (error) => this.displayError(error)
     );

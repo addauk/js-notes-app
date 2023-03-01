@@ -51,4 +51,18 @@ describe("NotesClient class", () => {
       done();
     });
   });
+
+  it("converts emoji syntax to emojis", (done) => {
+    const client = new NotesClient();
+    fetch.mockResponse(JSON.stringify({ emojified_text: "hello 🌍" }));
+    client.emojify(
+      "hello :earth_africa:",
+      (returnedDataFromApi) => {
+        console.log(returnedDataFromApi);
+        expect(returnedDataFromApi).toBe("hello 🌍");
+        done();
+      },
+      (error) => console.log(error)
+    );
+  });
 });
